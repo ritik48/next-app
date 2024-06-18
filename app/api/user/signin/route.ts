@@ -12,25 +12,32 @@ export async function POST(req: NextRequest) {
         await connectDb();
     } catch (error) {
         console.log(error);
-        return Response.json({
-            success: false,
-            message: "Something went wrong",
-        });
+        return Response.json(
+            {
+                success: false,
+                message: "Something went wrong",
+            },
+            { status: 500 }
+        );
     }
-
-    console.log("here ologin");
 
     const body: UserType = await req.json();
 
     const user = await User.findOne({ ...body });
     if (!user) {
-        return Response.json({
-            success: false,
-            message: "Invalid credentials",
-        });
+        return Response.json(
+            {
+                success: false,
+                message: "Invalid credentials",
+            },
+            { status: 404 }
+        );
     }
 
-    return Response.json({ success: true, message: "User logged in" });
+    return Response.json(
+        { success: true, message: "User logged in" },
+        { status: 200 }
+    );
 }
 
 // export function GET(req: NextRequest) {

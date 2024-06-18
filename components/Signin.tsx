@@ -6,6 +6,7 @@ import { useState } from "react";
 export function Signin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const router = useRouter();
 
@@ -14,15 +15,14 @@ export function Signin() {
             method: "POST",
             body: JSON.stringify({ email, password }),
         });
-
         const data = await res.json();
 
-        console.log(data);
-
-        if (!data.success) {
-            alert("Cannot signup");
+        if (!res.ok) {
+            setError(data.message);
             return;
         }
+
+        console.log(data);
 
         router.push("/");
     }
@@ -30,6 +30,7 @@ export function Signin() {
     return (
         <section className="mb-auto h-full flex justify-center mt-44">
             <div className="max-w-5xl gap-5 mx-auto flex flex-col items-center">
+                <div>{error}</div>
                 <h1 className="text-3xl font-bold">Login</h1>
                 <div className="flex flex-col gap-2">
                     <input
