@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
+import { SessionProvider } from "next-auth/react";
+import { Provider } from "./provider";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -16,8 +18,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="flex flex-col h-screen">
-                <NavBar />
-                {children}
+                <Provider>
+                    <NavBar />
+                    {children}
+                </Provider>
             </body>
         </html>
     );

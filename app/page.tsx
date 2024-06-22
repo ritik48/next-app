@@ -1,13 +1,19 @@
-import { User } from "./models/user";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./lib/authOptions";
 
 export default async function Home() {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    const user = await User.findOne({});
+    const session = await getServerSession(authOptions);
+    console.log(session);
+
+    if (!session?.user) {
+        return redirect("/signin");
+    }
 
     return (
         <main>
             <div className="text-4xl flex justify-center items-center font-bold">
-                hi, {user.email}
+                hi, {session?.user?.email}
             </div>
         </main>
     );

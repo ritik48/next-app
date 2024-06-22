@@ -1,6 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export function Signin() {
@@ -11,21 +12,15 @@ export function Signin() {
     const router = useRouter();
 
     async function handleSignin() {
-        const res = await fetch("http://localhost:3000/api/user/signin", {
-            method: "POST",
-            body: JSON.stringify({ email, password }),
+        signIn("credentials", {
+            email,
+            password,
         });
-        const data = await res.json();
 
-        if (!res.ok) {
-            setError(data.message);
-            return;
-        }
-
-        console.log(data);
-
-        router.push("/");
+        // router.push("/");
     }
+    const params = useSearchParams();
+    console.log(params.get("error"));
 
     return (
         <section className="mb-auto h-full flex justify-center mt-44">
