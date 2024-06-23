@@ -13,9 +13,10 @@ export const authOptions = {
 
                 const user = await User.findOne({ email, password });
                 if (!user) {
-                    throw new Error("Invalid credentials")
+                    throw new Error("Invalid credentials");
                 }
-
+                
+                // Adding random property r to understand how to make it available in the response
                 return {
                     r: "hello",
                     id: user.id,
@@ -25,9 +26,21 @@ export const authOptions = {
         }),
     ],
     callbacks: {
-        session({ token, session }: any) {
+        jwt({ token, user }: any) {
+            
+            // we have to make check on user, because The arguments user, account, profile and isNewUser are only passed 
+            // the first time this callback is called on a new session, after the user signs in.In subsequent calls, 
+            // only token will be available.
+            if (user && user.r) {
+                token.r = user.r;
+            }
+
+            return token;
+        },
+        session({ token, session, user }: any) {
             if (session && session.user) {
                 session.user.id = token.sub;
+                session.user.r = token.r;
             }
             return session;
         },
