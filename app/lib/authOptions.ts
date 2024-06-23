@@ -13,10 +13,11 @@ export const authOptions = {
 
                 const user = await User.findOne({ email, password });
                 if (!user) {
-                    return null;
+                    throw new Error("Invalid credentials")
                 }
 
                 return {
+                    r: "hello",
                     id: user.id,
                     email: user.email,
                 };

@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export function Signin() {
     const [email, setEmail] = useState("");
@@ -12,15 +13,17 @@ export function Signin() {
     const router = useRouter();
 
     async function handleSignin() {
-        signIn("credentials", {
+        const res = await signIn("credentials", {
             email,
             password,
+            redirect: false,
         });
-
-        // router.push("/");
+        if (!res?.ok) {
+            return toast.error(res?.error as string);
+        }
+        toast.success("User logged in.")
+        router.push("/");
     }
-    const params = useSearchParams();
-    console.log(params.get("error"));
 
     return (
         <section className="mb-auto h-full flex justify-center mt-44">
