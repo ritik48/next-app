@@ -7,7 +7,7 @@ export default function NavBar() {
     const session = useSession();
 
     const isAuthenticated = session.status === "authenticated";
-    console.log("authenticated = ", session);
+    // console.log("authenticated = ", session);
 
     return (
         <nav className="py-2 border border-x-0 border-b border-t-0">
