@@ -21,7 +21,7 @@ export function Signin() {
         if (!res?.ok) {
             return toast.error(res?.error as string);
         }
-        toast.success("User logged in.")
+        toast.success("User logged in.");
         router.push("/");
     }
 
@@ -48,6 +48,9 @@ export function Signin() {
                         className="border bg-gray-800 text-gray-100 px-5 py-2 rounded-md"
                     >
                         Log in
+                    </button>
+                    <button onClick={() => signIn("google")} className="border bg-blue-800 text-gray-100 px-5 py-2 rounded-md">
+                        Google Login 
                     </button>
                 </div>
             </div>

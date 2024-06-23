@@ -1,9 +1,16 @@
 import { User } from "../models/user";
 import { connectDb } from "./db";
+
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
     providers: [
+        // @ts-ignore
+        GoogleProvider({
+            clientId: process.env.CLIENT_ID as string,
+            clientSecret: process.env.CLIENT_SECRET as string,
+        }),
         // @ts-ignore
         CredentialsProvider({
             name: "Credential Auth",
@@ -15,7 +22,7 @@ export const authOptions = {
                 if (!user) {
                     throw new Error("Invalid credentials");
                 }
-                
+
                 // Adding random property r to understand how to make it available in the response
                 return {
                     r: "hello",
@@ -27,9 +34,8 @@ export const authOptions = {
     ],
     callbacks: {
         jwt({ token, user }: any) {
-            
-            // we have to make check on user, because The arguments user, account, profile and isNewUser are only passed 
-            // the first time this callback is called on a new session, after the user signs in.In subsequent calls, 
+            // we have to make check on user, because The arguments user, account, profile and isNewUser are only passed
+            // the first time this callback is called on a new session, after the user signs in.In subsequent calls,
             // only token will be available.
             if (user && user.r) {
                 token.r = user.r;

@@ -4,6 +4,7 @@ import { authOptions } from "./lib/authOptions";
 
 export default async function Home() {
     const session = await getServerSession(authOptions);
+    console.log("=====================================================");
     console.log(session);
 
     if (!session?.user) {
